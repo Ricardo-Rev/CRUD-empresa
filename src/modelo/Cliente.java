@@ -91,7 +91,6 @@ public class Cliente extends Persona {
             return tabla;
     }
     
-    
     public void actualizar(){
         try{
             PreparedStatement parametro;
@@ -107,7 +106,7 @@ public class Cliente extends Persona {
             parametro.setString(6, getFecha_nacimiento());
             parametro.setInt(7, getId());
             int ejecutar = parametro.executeUpdate();
-        System.out.println("Modificación exitosa :" + Integer.toString(ejecutar) );
+            System.out.println("Modificación exitosa :" + Integer.toString(ejecutar) );
             cn.cerrar_conexion();
             
         } catch(SQLException ex){
@@ -124,9 +123,8 @@ public class Cliente extends Persona {
             parametro = (PreparedStatement) cn.conexionDB.prepareStatement(query);
             parametro.setInt(1, getId());
             int ejecutar = parametro.executeUpdate();
-        System.out.println("Eliminación exitosa:" + Integer.toString(ejecutar) );
+            System.out.println("Eliminación exitosa:" + Integer.toString(ejecutar) );
             cn.cerrar_conexion();
-            
         } catch(SQLException ex){
             System.out.println("Error en borrar: " + ex.getMessage());
         }

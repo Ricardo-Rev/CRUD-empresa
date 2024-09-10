@@ -16,6 +16,7 @@ public class Empleado extends Persona {
     private String codigo;
     private int id;
     private int idPuesto;
+    Conexion cn;
 
     // Constructor por defecto
     public Empleado() {}
@@ -57,10 +58,11 @@ public class Empleado extends Persona {
     @Override
     public void agregar() {
         try {
+            PreparedStatement parametro;
             Conexion cn = new Conexion();
             cn.abrir_conexion();
             String query = "INSERT INTO empleados(codigo, nombres, apellidos, direccion, telefono, fecha_nacimiento, id_puesto) VALUES(?, ?, ?, ?, ?, ?, ?);";
-            PreparedStatement parametro = cn.conexionDB.prepareStatement(query);
+            parametro = (PreparedStatement) cn.conexionDB.prepareStatement(query);
             parametro.setString(1, getCodigo());
             parametro.setString(2, getNombres());
             parametro.setString(3, getApellidos());
@@ -69,7 +71,7 @@ public class Empleado extends Persona {
             parametro.setString(6, getFecha_nacimiento());
             parametro.setInt(7, getIdPuesto()); // Usar ID del puesto
             int ejecutar = parametro.executeUpdate();
-            System.out.println("Ingreso exitoso, han afectado: " + ejecutar);
+            System.out.println("Ingreso exitoso, han afectado: " + Integer.toString(ejecutar));
             cn.cerrar_conexion();
         } catch (SQLException ex) {
             System.out.println("Algo salió mal: " + ex.getMessage());
@@ -81,7 +83,7 @@ public class Empleado extends Persona {
     public DefaultTableModel leer() {
         DefaultTableModel tabla = new DefaultTableModel();
         try {
-            Conexion cn = new Conexion();
+            cn = new Conexion();
             cn.abrir_conexion();
             String query = "SELECT e.id_empleados, e.codigo, e.nombres, e.apellidos, e.direccion, e.telefono, e.fecha_nacimiento, p.puesto " +
                            "FROM empleados e " +
@@ -110,10 +112,11 @@ public class Empleado extends Persona {
 
     public void actualizar() {
         try {
-            Conexion cn = new Conexion();
+            PreparedStatement parametro;
+            cn= new Conexion();
             cn.abrir_conexion();
             String query = "UPDATE empleados SET codigo = ?, nombres = ?, apellidos = ?, direccion = ?, telefono = ?, fecha_nacimiento = ?, id_puesto = ? WHERE id_empleados = ?;";
-            PreparedStatement parametro = cn.conexionDB.prepareStatement(query);
+            parametro = (PreparedStatement) cn.conexionDB.prepareStatement(query);
             parametro.setString(1, getCodigo());
             parametro.setString(2, getNombres());
             parametro.setString(3, getApellidos());
@@ -127,7 +130,7 @@ public class Empleado extends Persona {
             System.out.println("ID del puesto para actualización: " + getIdPuesto());
 
             int ejecutar = parametro.executeUpdate();
-            System.out.println("Modificación exitosa: " + ejecutar);
+            System.out.println("Modificación exitosa: " + Integer.toString(ejecutar));
             cn.cerrar_conexion();
         } catch (SQLException ex) {
             System.out.println("Error en modificación: " + ex.getMessage());
@@ -138,13 +141,13 @@ public class Empleado extends Persona {
     // Método para borrar un empleado
     public void borrar() {
         try {
-            Conexion cn = new Conexion();
+            cn= new Conexion();
             cn.abrir_conexion();
             String query = "DELETE FROM empleados WHERE id_empleados = ?;";
             PreparedStatement parametro = cn.conexionDB.prepareStatement(query);
             parametro.setInt(1, getId());
             int ejecutar = parametro.executeUpdate();
-            System.out.println("Eliminación exitosa: " + ejecutar);
+            System.out.println("Eliminación exitosa: " + Integer.toString(ejecutar));
             cn.cerrar_conexion();
         } catch (SQLException ex) {
             System.out.println("Error en borrar: " + ex.getMessage());
@@ -155,29 +158,23 @@ public class Empleado extends Persona {
         combo.removeAllItems(); // Limpiar los elementos anteriores del JComboBox
         combo.addItem("0) Elija puesto"); // Agregar item de opción por defecto
 
-        String sql = "SELECT id_puestos, " + dato + " FROM " + tabla;
-        Conexion cn = new Conexion();
+        String query = "SELECT id_puestos, " + dato + " FROM " + tabla;
         ResultSet consulta = null;
 
         try {
+            cn= new Conexion();
             cn.abrir_conexion();
-            consulta = cn.conexionDB.createStatement().executeQuery(sql);
+            consulta = cn.conexionDB.createStatement().executeQuery(query);
 
             while (consulta.next()) {
-                int idPuesto = consulta.getInt("id_puestos");
+                idPuesto = consulta.getInt("id_puestos");
                 String nombrePuesto = consulta.getString(dato);
                 String item = idPuesto + ") " + nombrePuesto;
                 combo.addItem(item);
             }
+            cn.cerrar_conexion();
         } catch (SQLException ex) {
             System.out.println("Error en el ComboBox: " + ex.getMessage());
-        } finally {
-            try {
-                if (consulta != null) consulta.close();
-                cn.cerrar_conexion();
-            } catch (SQLException ex) {
-                System.out.println("Error al cerrar recursos: " + ex.getMessage());
-            }
         }
     }
 

@@ -6,7 +6,6 @@ package modelo;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -41,18 +40,18 @@ public class Puesto {
 
     // Método para agregar un nuevo puesto
     public void agregarPuesto() {
-        String sql = "INSERT INTO puestos (puesto) VALUES (?);";
         try {
+            PreparedStatement parametro;
             cn= new Conexion();
             cn.abrir_conexion();
-            PreparedStatement pst = cn.conexionDB.prepareStatement(sql);
-            pst.setString(1, this.puesto);
-            pst.executeUpdate();
-            System.out.println("Puesto agregado correctamente");
+            String query = "INSERT INTO puestos (puesto) VALUES (?);";
+            parametro = (PreparedStatement) cn.conexionDB.prepareStatement(query);
+             parametro.setString(1, getPuesto());
+            int ejecutar = parametro.executeUpdate();
+            System.out.println("Puesto agregado correctamente" + Integer.toString(ejecutar));
+            cn.cerrar_conexion();
         } catch (SQLException e) {
             System.out.println("Error al agregar puesto: " + e.getMessage());
-        } finally {
-            cn.cerrar_conexion(); // Asegurarse de cerrar la conexión
         }
     }
     
@@ -68,7 +67,7 @@ public class Puesto {
             tabla.setColumnIdentifiers(encabezado);
             String[] datos = new String[2];
             while (consulta.next()) {
-                datos[0] = String.valueOf(consulta.getInt("id_puestos"));
+                datos[0] = consulta.getString("id_puestos");
                 datos[1] = consulta.getString("puesto");
                 tabla.addRow(datos);
             }
@@ -81,16 +80,16 @@ public class Puesto {
     
     // Método para actualizar un puesto existente
     public void actualizar() {
-        String sql = "UPDATE puestos SET puesto = ? WHERE id_puestos = ?";
         try {
             PreparedStatement parametro;
             cn= new Conexion();
             cn.abrir_conexion();
-            PreparedStatement pst = cn.conexionDB.prepareStatement(sql);
-            pst.setString(1, this.puesto);
-            pst.setInt(2, this.id);
-            pst.executeUpdate();
-            System.out.println("Puesto actualizado correctamente");
+            String query = "UPDATE puestos SET puesto = ? WHERE id_puestos = ?";
+            parametro = (PreparedStatement) cn.conexionDB.prepareStatement(query);
+            parametro.setString(1, getPuesto());
+            parametro.setInt(2, getIdPuesto());
+            int ejecutar = parametro.executeUpdate();
+            System.out.println("Puesto actualizado correctamente" + Integer.toString(ejecutar));
             cn.cerrar_conexion();
         } catch (SQLException e) {
             System.out.println("Error al actualizar puesto: " + e.getMessage());
@@ -99,15 +98,15 @@ public class Puesto {
 
     // Método para borrar un puesto
     public void borrar() {
-        String sql = "DELETE FROM puestos WHERE id_puestos = ?";
         try {
             PreparedStatement parametro;
             cn= new Conexion();
             cn.abrir_conexion();
-            PreparedStatement pst = cn.conexionDB.prepareStatement(sql);
-            pst.setInt(1, this.id);
-            pst.executeUpdate();
-            System.out.println("Puesto eliminado correctamente");
+            String query = "DELETE FROM puestos WHERE id_puestos = ?";
+            parametro = (PreparedStatement) cn.conexionDB.prepareStatement(query);
+            parametro.setInt(1, getIdPuesto());
+            int ejecutar = parametro.executeUpdate();
+            System.out.println("Puesto eliminado correctamente" + Integer.toString(ejecutar));
             cn.cerrar_conexion();
         } catch (SQLException e) {
             System.out.println("Error al eliminar puesto: " + e.getMessage());

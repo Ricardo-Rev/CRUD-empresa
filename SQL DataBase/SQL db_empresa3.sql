@@ -61,9 +61,8 @@ CREATE TABLE `empleados` (
   `fecha_nacimiento` date DEFAULT NULL,
   `id_puesto` smallint DEFAULT NULL,
   PRIMARY KEY (`id_empleados`),
-  KEY `id_puesto_puestos_empleados_idx` (`id_puesto`) /*!80000 INVISIBLE */,
-  CONSTRAINT `id_puesto_puestos_empleados` FOREIGN KEY (`id_puesto`) REFERENCES `puestos` (`id_puestos`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `id_puesto_puestos_empleados_idx` (`id_puesto`) /*!80000 INVISIBLE */
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +71,7 @@ CREATE TABLE `empleados` (
 
 LOCK TABLES `empleados` WRITE;
 /*!40000 ALTER TABLE `empleados` DISABLE KEYS */;
-INSERT INTO `empleados` VALUES (1,'1010','Ricardo ','Revolorio','Guatemala','1234','2000-01-01',1),(3,'1100','Pedro','Guzman','Mixco','1234','2000-01-01',2),(6,'1011','Juan','Perez','Guaemala','1234','2000-01-01',1);
+INSERT INTO `empleados` VALUES (1,'1010','Ricardo','Revolorio','Guatemala','1234','2000-01-01',1),(2,'1011','Juan','Perez','Guatemala','1234','2000-01-01',4),(3,'1012','Maria','Caceres','Mixco','1234','2000-01-01',3),(4,'1013','Paco','Rosales','Mixco','1234','2000-01-01',5);
 /*!40000 ALTER TABLE `empleados` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,7 +86,7 @@ CREATE TABLE `puestos` (
   `id_puestos` smallint NOT NULL AUTO_INCREMENT,
   `puesto` varchar(35) NOT NULL,
   PRIMARY KEY (`id_puestos`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +95,7 @@ CREATE TABLE `puestos` (
 
 LOCK TABLES `puestos` WRITE;
 /*!40000 ALTER TABLE `puestos` DISABLE KEYS */;
-INSERT INTO `puestos` VALUES (1,'Administrador'),(2,'Desarrollador'),(6,'Analista'),(7,'Tecnico');
+INSERT INTO `puestos` VALUES (1,'Administrador'),(2,'Desarrollador'),(3,'Secretaria'),(4,'Analista de datos'),(5,'Soporte Técnico');
 /*!40000 ALTER TABLE `puestos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -109,4 +108,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-08 23:00:26
+-- Dump completed on 2024-09-09 18:48:09

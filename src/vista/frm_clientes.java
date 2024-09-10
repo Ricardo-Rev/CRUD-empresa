@@ -659,6 +659,7 @@ Empleado empleado = new Empleado();
         puesto.agregarPuesto();
         tbl_datos_puestos.setModel(puesto.leerPuestos());
         limpia_datos_puestos();
+        empleado.rellenarComboBox("puestos", "puesto", cb_puestos);
     }//GEN-LAST:event_bt_agregar_puestosActionPerformed
 
     private void bt_actualizar_puestosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_actualizar_puestosActionPerformed
